@@ -1,0 +1,81 @@
+---
+title: '2'
+author: "Bo"
+date: "2025-06-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+data = read.csv("Mobile_data_usage.csv", header = TRUE)
+fix(data)
+attach(data)
+```
+
+
+```{r pressure, echo=FALSE}
+library(censReg)
+```
+
+```{r}
+plot(Quota, DataUse)
+```
+
+```{r}
+y = DataUse
+y[DataUse == 0] = 0
+```
+
+
+```{r}
+lm.res = lm(DataUse~Quota+Days)
+lm.sum = summary(lm.res)
+lm.sum
+```
+
+```{r}
+tobit.res = censReg(DataUse~Quota+Days)
+tobit.sum = summary(tobit.res)
+tobit.sum
+```
+
+```{r}
+cbind(coef(lm.res)[1:3], coef(tobit.res)[1:3])
+```
+
+```{r}
+beta = coef(tobit.res)[1:3]
+beta
+sigma = exp(coef(tobit.res)[4])
+sigma
+
+xb = beta[1] + beta[2] * 10 + beta[3]*mean(Days)
+Ey = pnorm(xb/sigma)*xb+sigma*dnorm(xb/sigma)
+
+marg.eff = pnorm(xb/sigma) * beta[2]
+
+
+margEff(tobit.res, c(1, 10, 16))
+
+margEff(tobit.res, c(1, 2000, 16))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
