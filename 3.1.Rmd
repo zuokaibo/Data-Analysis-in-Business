@@ -1,0 +1,81 @@
+---
+title: "3-1"
+author: "Bo"
+date: "2025-06-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r cars}
+mydata =  read.csv("Bank_Attrition.csv")
+fix(mydata)
+```
+
+
+
+```{r pressure, echo=FALSE}
+library(survival)
+```
+
+```{r}
+surv.res =  survreg(Surv(ChurnTime, 1-Censored)~. -CustomerID,  data=mydata, dist = "weibull")
+summary(surv.res)
+```
+
+
+```{r}
+a = 1/surv.res$scale
+a
+beta = -coef(surv.res)*a
+
+beta
+```
+
+
+```{r}
+names(mydata)
+xbar = colMeans(mydata[, 2:10])
+xbeta = crossprod(c(1, xbar), beta)
+curve(exp(c(xbeta))*a*x^(a-1),xlim = c(0,20), xlab="time",ylab="hazard")
+```
+
+
+
+```{r}
+curve(dweibull(x, shape=a, scale=exp(-xbeta/a)), xlab="churntime", ylab="density", xlim=c(0,300), ylim=c(0, 0.099))
+
+hist(mydata$ChurnTime[mydata$Censored == 0], breaks = 50, freq = FALSE, col = NULL)
+```
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
