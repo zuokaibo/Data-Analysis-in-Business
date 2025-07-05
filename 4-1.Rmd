@@ -1,0 +1,49 @@
+---
+title: "4--1"
+author: "Bo"
+date: "2025-07-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+library(AER)
+```
+
+
+```{r pressure, echo=FALSE}
+mydata = read.csv("Education_data.csv")
+head(mydata)
+```
+
+```{r}
+ols.res = lm(log(wage)~educ + exper + I(exper^2), data = mydata)
+summary(ols.res)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
