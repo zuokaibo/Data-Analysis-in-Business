@@ -26,14 +26,36 @@ summary(ols.res)
 ```
 
 
+```{r}
+stage1.1 = lm(educ~fatheduc+motheduc+nearc4+exper + I(exper^2), data = mydata)
+summary(stage1.1)
+```
 
 
+```{r}
+stage2.1 = lm(log(wage)~fitted(stage1) + exper + I(exper^2), data = mydata)
+summary(stage2.1)
+```
 
 
+```{r}
+stage1 = lm(educ~nearc4+exper + I(exper^2), data = mydata)
+summary(stage1)
+```
 
+```{r}
+stage2 = lm(log(wage)~fitted(stage1) + exper + I(exper^2), data = mydata)
+summary(stage2)
+```
 
+```{r}
+TSLS.res = ivreg(log(wage)~educ + exper + I(exper^2)|nearc4 + exper + I(exper^2), data = mydata )
+summary(TSLS.res)
+```
 
-
+```{r}
+cbind(coef(ols.res), coef(TSLS.res))
+```
 
 
 
