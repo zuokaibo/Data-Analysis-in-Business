@@ -161,6 +161,13 @@ plot(mydata, col=km.res.3$cluster, pch=20, main="k means with 3 clusters with sc
 plot(mydata, col=cutree(hc.res.average, k=3), pch=20, main="hierarchcial clustering (average linkage)")
 ```
 
+```{r}
+
+
+
+
+
+```
 
 
 
