@@ -16,46 +16,112 @@ library(AER)
 
 
 ```{r pressure, echo=FALSE}
-mydata = read.csv("Education_data.csv")
-head(mydata)
+mydata1 = read.csv("Education_data.csv")
+head(mydata1)
 ```
 
 ```{r}
-ols.res = lm(log(wage)~educ + exper + I(exper^2), data = mydata)
+ols.res = lm(log(wage)~educ + exper + I(exper^2), data = mydata1)
 summary(ols.res)
 ```
 
 
 ```{r}
-stage1.1 = lm(educ~fatheduc+motheduc+nearc4+exper + I(exper^2), data = mydata)
+stage1.1 = lm(educ~fatheduc+motheduc+nearc4+exper + I(exper^2), data = mydata1)
 summary(stage1.1)
 ```
 
 
 ```{r}
-stage2.1 = lm(log(wage)~fitted(stage1) + exper + I(exper^2), data = mydata)
+stage2.1 = lm(log(wage)~fitted(stage1) + exper + I(exper^2), data = mydata1)
 summary(stage2.1)
 ```
 
 
 ```{r}
-stage1 = lm(educ~nearc4+exper + I(exper^2), data = mydata)
+stage1 = lm(educ~nearc4+exper + I(exper^2), data = mydata1)
 summary(stage1)
 ```
 
 ```{r}
-stage2 = lm(log(wage)~fitted(stage1) + exper + I(exper^2), data = mydata)
+stage2 = lm(log(wage)~fitted(stage1) + exper + I(exper^2), data = mydata1)
 summary(stage2)
 ```
 
 ```{r}
-TSLS.res = ivreg(log(wage)~educ + exper + I(exper^2)|nearc4 + exper + I(exper^2), data = mydata )
+TSLS.res = ivreg(log(wage)~educ + exper + I(exper^2)|nearc4 + exper + I(exper^2), data = mydata1 )
 summary(TSLS.res)
 ```
 
 ```{r}
 cbind(coef(ols.res), coef(TSLS.res))
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+mydata = read.csv("ShoppingVisits.csv")
+head(mydata)
+```
+
+```{r}
+km.res.ns = kmeans(mydata, 3, nstart = 20)
+km.res.ns
+
+plot(mydata, col=km.res.ns$cluster, pch=20, main="k means with 3 clusters without scaling")
+
+```
+
+
+
+```{r}
+mydata.sc = scale(mydata)
+
+```
+
+
+```{r}
+km.res.3 = kmeans(mydata.sc, 3, nstart = 20)
+
+plot(mydata, col=km.res.3$cluster, pch=20, main="k means with 3 clusters with scaling")
+
+```
+
+
+
+```{r}
+par(mfrow=c(1,2))
+plot(mydata, col=km.res.ns$cluster, pch=20, main="k means with 3 clusters without scaling")
+plot(mydata, col=km.res.3$cluster, pch=20, main="k means with 3 clusters with scaling")
+
+```
+
+
+```{r}
+
+
+
+
+
+```
+
+
+
+
+
+
 
 
 
