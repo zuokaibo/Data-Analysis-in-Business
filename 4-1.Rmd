@@ -150,13 +150,16 @@ plot(ss.vec, type = "b", xlab="number of cluster", ylab = "total within-cluster 
 
 
 ```{r}
-
-
-
-
-
+hc.res.average = hclust(dist(mydata.sc), method = "average")
+plot(hc.res.average, cex=0.5, main = "dendrogram (average linkage)", xlab="", ylab="", sub="")
+abline(h= 1.75, col="red", lty=2)
 ```
 
+```{r}
+par(mfrow=c(1,2))
+plot(mydata, col=km.res.3$cluster, pch=20, main="k means with 3 clusters with scaling")
+plot(mydata, col=cutree(hc.res.average, k=3), pch=20, main="hierarchcial clustering (average linkage)")
+```
 
 
 
