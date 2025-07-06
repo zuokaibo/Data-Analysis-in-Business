@@ -110,18 +110,52 @@ plot(mydata, col=km.res.3$cluster, pch=20, main="k means with 3 clusters with sc
 
 
 ```{r}
+km.res.2 = kmeans(mydata.sc, 2, nstart = 20)
+plot(mydata, col=km.res.2$cluster, pch=20, main="k means with 2 clusters with scaling")
+
+km.res.4 = kmeans(mydata.sc, 4, nstart = 20)
+plot(mydata, col=km.res.4$cluster, pch=20, main="k means with 4 clusters with scaling")
+
+km.res.5 = kmeans(mydata.sc, 5, nstart = 20)
+plot(mydata, col=km.res.5$cluster, pch=20, main="k means with 5 clusters with scaling")
+
+```
+
+
+
+```{r}
+par(mfrow=c(2,2))
+plot(mydata, col=km.res.2$cluster, pch=20, main="k means with 2 clusters with scaling")
+plot(mydata, col=km.res.3$cluster, pch=20, main="k means with 3 clusters with scaling")
+plot(mydata, col=km.res.4$cluster, pch=20, main="k means with 4 clusters with scaling")
+plot(mydata, col=km.res.5$cluster, pch=20, main="k means with 5 clusters with scaling")
+
+```
+
+```{r}
+
+ss1 = km.res.2$totss
+ss2 = km.res.2$tot.withinss
+ss3 = km.res.3$tot.withinss
+ss4 = km.res.4$tot.withinss
+ss5 = km.res.5$tot.withinss
+
+ss.vec = c(ss1, ss2, ss3, ss4, ss5)
+
+par(mfrow=c(1,1))
+
+plot(ss.vec, type = "b", xlab="number of cluster", ylab = "total within-cluster ss")
+
+```
+
+
+```{r}
 
 
 
 
 
 ```
-
-
-
-
-
-
 
 
 
