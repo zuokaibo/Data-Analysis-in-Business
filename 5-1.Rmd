@@ -41,7 +41,7 @@ processedCorp
 
 
 ```{r}
-DTM = DocumentTermMatrix(processedCorp, control = list(bounds = list(global = c(5, Inf))))
+DTM = DocumentTermMatrix(processedCorp, control = list(bounds = list(global = c(3, Inf))))
 dim(DTM)
 nTerms(DTM)
 nDocs(DTM)
@@ -92,13 +92,13 @@ terms(tm, 10)
 
 
 ```{r}
-as.character(corp[2]$content)
-barplot(theta[2, ])
+as.character(corp[1082]$content)
+barplot(theta[1082, ])
 ```
 
 
 ```{r}
-top.term.prob=sort(beta[11, ] , decreasing = TRUE)[1:50]
+top.term.prob=sort(beta[4, ] , decreasing = TRUE)[1:50]
 wordcloud(names(top.term.prob), top.term.prob, random.order = FALSE)
 ```
 
