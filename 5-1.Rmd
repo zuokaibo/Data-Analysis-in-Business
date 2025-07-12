@@ -1,0 +1,171 @@
+---
+title: "5-1"
+author: "Bo"
+date: "2025-07-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r cars}
+library(NLP)
+library(tm)
+library(topicmodels)
+library(wordcloud)
+library(RColorBrewer)
+library(SnowballC)
+```
+
+
+
+```{r pressure, echo=FALSE}
+textdata = read.csv("News.csv")
+corp = Corpus(DataframeSource(textdata))
+corp
+```
+
+```{r}
+
+processedCorp = tm_map(corp, stripWhitespace)
+processedCorp = tm_map(processedCorp, removePunctuation)
+processedCorp = tm_map(processedCorp, removeNumbers)
+processedCorp = tm_map(processedCorp, removeWords, stopwords("english") )
+processedCorp = tm_map(processedCorp, stemDocument)
+
+processedCorp
+```
+
+
+```{r}
+DTM = DocumentTermMatrix(processedCorp, control = list(bounds = list(global = c(5, Inf))))
+dim(DTM)
+nTerms(DTM)
+nDocs(DTM)
+DTM$dimnames$Terms[1:50]
+```
+
+
+```{r}
+
+row.index = slam::row_sums(DTM)>0
+DTM = DTM[row.index, ]
+textdata = textdata[row.index, ]
+dim(DTM)
+```
+
+```{r}
+
+set.seed(1000)
+tm = LDA(DTM, 20, method = "Gibbs", control = list(iter = 1000, verbose = 50))
+
+```
+
+
+```{r}
+tm.res = posterior(tm)
+```
+
+
+```{r}
+beta = tm.res$terms
+dim(beta)
+beta[, 1:5]
+rowSums(beta)
+```
+
+
+```{r}
+theta = tm.res$topics
+dim(theta)
+theta[1:5, ]
+rowSums(theta)[1:10]
+```
+
+
+```{r}
+terms(tm, 10)
+```
+
+
+```{r}
+as.character(corp[2]$content)
+barplot(theta[2, ])
+```
+
+
+```{r}
+top.term.prob=sort(beta[11, ] , decreasing = TRUE)[1:50]
+wordcloud(names(top.term.prob), top.term.prob, random.order = FALSE)
+```
+
+
+```{r}
+top.term.prob=sort(beta[4, ] , decreasing = TRUE)[1:50]
+wordcloud(names(top.term.prob), top.term.prob, random.order = FALSE)
+```
+
+
+```{r}
+top.term.prob=sort(beta[10, ] , decreasing = TRUE)[1:50]
+wordcloud(names(top.term.prob), top.term.prob, random.order = FALSE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
